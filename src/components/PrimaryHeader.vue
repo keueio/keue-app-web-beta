@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref } from "vue";
 import SideMenu from "@/components/SideMenu.vue";
 import Logo from "@/components/Logo.vue";
@@ -20,9 +20,7 @@ const openSideMenu = ref(false);
                     </a>
                     <ul class="hidden xl:flex px-4 ml-14 2xl:ml-40 mr-auto">
                         <li class="mr-8 2xl:mr-14">
-                            <PrimaryButton :icon="CakeIcon"
-                                >Dashboard</PrimaryButton
-                            >
+                            <PrimaryButton :icon="CakeIcon">Dashboard</PrimaryButton>
                         </li>
                         <li class="mr-8 2xl:mr-14">
                             <PrimaryButton>Users</PrimaryButton>

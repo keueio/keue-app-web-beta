@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
 </script>
 <template>
@@ -7,17 +7,17 @@ import { Menu, MenuButton, MenuItems, MenuItem } from "@headlessui/vue";
             <MenuButton>More</MenuButton>
             <MenuItems class="absolute bottom-0 flex flex-col">
                 <MenuItem v-slot="{ active }">
-                    <a :class="{ 'bg-blue-500': active }" href="/account-settings">
-                        Account settings
-                    </a>
+                <a :class="{ 'bg-blue-500': active }" href="/account-settings">
+                    Account settings
+                </a>
                 </MenuItem>
                 <MenuItem v-slot="{ active }">
-                    <a :class="{ 'bg-blue-500': active }" href="/account-settings">
-                        Documentation
-                    </a>
+                <a :class="{ 'bg-blue-500': active }" href="/account-settings">
+                    Documentation
+                </a>
                 </MenuItem>
                 <MenuItem disabled>
-                    <span class="opacity-75">Invite a friend (coming soon!)</span>
+                <span class="opacity-75">Invite a friend (coming soon!)</span>
                 </MenuItem>
             </MenuItems>
         </Menu>

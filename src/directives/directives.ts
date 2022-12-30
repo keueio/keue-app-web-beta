@@ -1,8 +1,8 @@
 import autoAnimate from "@formkit/auto-animate";
 
 export const vAutoAnimate = {
-    mounted: (el) => autoAnimate(el),
+    mounted: (el: any) => autoAnimate(el),
 };
 export const vAutoFocus = {
-    mounted: (el) => el.focus(),
+    mounted: (el: any) => el.focus(),
 };
