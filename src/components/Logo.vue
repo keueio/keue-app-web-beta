@@ -1,7 +1,3 @@
 <template>
-    <img
-        class="h-12"
-        src="/uinel-assets/logos/dashboard/uifive-gray-black.svg"
-        alt=""
-    />
+    <h1 class="font-semibold text-7xl text-primary-400">keue</h1>
 </template>
