@@ -11,6 +11,7 @@
   },
   "dependencies": {
     "@apollo/client": "^3.7.3",
+    "@auth0/auth0-vue": "^1.0.2",
     "@formkit/auto-animate": "^1.0.0-beta.5",
     "@formkit/vue": "^1.0.0-beta.12",
     "@headlessui/vue": "^1.7.7",
