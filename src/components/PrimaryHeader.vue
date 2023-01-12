@@ -18,7 +18,7 @@ const openSideMenu = ref(false);
                     <a href="#">
                         <Logo />
                     </a>
-                    <ul class="hidden xl:flex px-4 ml-14 2xl:ml-40 mr-auto">
+                    <ul class="hidden lg:flex px-4 ml-14 2xl:ml-40 mr-auto">
                         <li class="mr-8 2xl:mr-14">
                             <PrimaryButton>Dashboard</PrimaryButton>
                         </li>
@@ -26,7 +26,7 @@ const openSideMenu = ref(false);
                             <PrimaryButton>Keues</PrimaryButton>
                         </li>
                     </ul>
-                    <div class="hidden xl:flex items-center">
+                    <div class="hidden lg:flex items-center">
                         <NotificationsButton />
                         <VerticalDivider />
                         <HeaderLoggedInUserDropdown />

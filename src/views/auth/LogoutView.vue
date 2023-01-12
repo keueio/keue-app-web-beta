@@ -2,15 +2,15 @@
 import { useAuth0 } from "@auth0/auth0-vue";
 import { onMounted } from "vue";
 const auth0 = useAuth0();
-const login = () => {
-    auth0.loginWithRedirect();
+const logout = () => {
+    auth0.logout();
 };
 onMounted(() => {
-    login();
+    logout();
 });
 </script>
 <template>
     <div class="container">
-        <h1 class="text-lg">Login</h1>
+        <h1 class="text-lg">Logout</h1>
     </div>
 </template>

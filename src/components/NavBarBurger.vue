@@ -1,5 +1,5 @@
 <template>
-    <button class="navbar-burger self-center xl:hidden">
+    <button class="navbar-burger self-center lg:hidden">
         <svg
             width="25"
             height="16"
