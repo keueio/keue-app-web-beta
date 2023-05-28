@@ -1,9 +1,21 @@
 <script setup lang="ts">
+import { orderBy, uniqBy } from "lodash";
 import ToggleSwitch from "@/components/buttons/ToggleSwitch.vue";
+import TaskItem from "@/components/tasks/TaskItem.vue";
 import { useRoute } from "vue-router";
 import { useMutation, useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
-import { computed, ref, watch } from "vue";
+import { computed, onMounted, ref, watch } from "vue";
+import { useFirestore } from "@/composables/firestoreComposable";
+const { app, db } = useFirestore();
+import {
+    getFirestore,
+    collection,
+    query,
+    onSnapshot,
+    getDocs,
+    limit,
+} from "firebase/firestore";
 const route = useRoute();
 const keueId = computed(() => route.params.id);
 const appId = computed(() => route.params.app);
@@ -60,6 +72,57 @@ watch(isRunningToggle, async (value) => {
     await resumeKeue({ input: { name: keueFullId.value, app: appId.value } });
     return refetch();
 });
+const latest: any = ref([]);
+const list: any = ref([]);
+const listFiltered = computed(() =>
+    orderBy(
+        uniqBy(list.value, (i: any) => i.id),
+        ["data.createdAt"],
+        ["desc"]
+    )
+);
+
+const getInitialList = async (q: any) => {
+    return new Promise<void>(async (resolve, reject) => {
+        console.log("get initial docs");
+        const initialDocs = await getDocs(q);
+        initialDocs.forEach((doc) => {
+            list.value.push({ data: doc.data(), id: doc.id });
+        });
+        console.log("completed initial docs");
+        return resolve();
+    });
+};
+onMounted(async () => {
+    // Initialize Realtime Database and get a reference to the service
+    const queryCollection = `keues/${keueFullId.value}/tasks`;
+    console.log("query collection: ", queryCollection);
+    const q = query(collection(db, queryCollection), limit(Number(50)));
+    await getInitialList(q);
+    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        console.log("udate: ", querySnapshot);
+        querySnapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+                console.log("added: ", change.doc.data());
+                if (list.value.some((i: any) => i.id === change.doc.id)) return;
+                list.value.push({
+                    data: change.doc.data(),
+                    id: change.doc.id,
+                });
+            }
+            if (change.type === "modified") {
+                console.log("Modified: ", change.doc.data());
+                list.value.push({
+                    data: change.doc.data(),
+                    id: change.doc.id,
+                });
+            }
+            if (change.type === "removed") {
+                console.log("Removed: ", change.doc.data());
+            }
+        });
+    });
+});
 </script>
 
 <template>
@@ -80,10 +143,22 @@ watch(isRunningToggle, async (value) => {
                                 Your Keue
                             </h2>
                             <p
-                                v-if="result"
+                                v-if="keueFullId"
                                 class="text-darkBlueGray-400 leading-8"
                             >
-                                {{ result.keue?.name }}
+                                {{ keueFullId }}
+                            </p>
+                            <p
+                                v-if="result?.keue?.state"
+                                class="text-darkBlueGray-400 leading-8"
+                            >
+                                Status: {{ result.keue?.state }}
+                            </p>
+                            <p
+                                v-if="ingressUrl"
+                                class="text-darkBlueGray-400 leading-8"
+                            >
+                                Ingress URL: {{ ingressUrl }}
                             </p>
                         </div>
                     </div>
@@ -106,19 +181,8 @@ watch(isRunningToggle, async (value) => {
             <div
                 class="relative p-10 xl:py-12 xl:px-20 bg-grey-300 overflow-hidden rounded-4xl"
             >
-                <div v-if="result" class="relative z-10 sm:max-w-sm">
-                    <h2
-                        class="mb-8 text-2xl md:text-2xl text-grey-600 font-heading font-semibold"
-                    >
-                        Status: {{ result.keue?.state }}
-                    </h2>
-                    <a
-                        :href="ingressUrl"
-                        target="_blank"
-                        class="mb-8 text-xl md:text-xl text-grey-600 font-heading font-medium"
-                    >
-                        {{ ingressUrl }}
-                    </a>
+                <div v-for="task in listFiltered" class="py-1">
+                    <TaskItem :task="task"></TaskItem>
                 </div>
             </div>
         </div>
