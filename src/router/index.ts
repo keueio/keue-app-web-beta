@@ -25,7 +25,7 @@ const router = createRouter({
             component: () => import("../views/start/CreateKeueView.vue"),
         },
         {
-            path: "/app/:app/keue/:id",
+            path: "/app/:app/:id",
             name: "keue",
             component: () => import("../views/keue/KeueView.vue"),
         },

@@ -9,9 +9,7 @@ const { generateUniqueName } = useKeuesComposable();
 const appName = generateUniqueName();
 const newKeueDefaultName = "default";
 const newKeueName = ref(`${appName}---${newKeueDefaultName}`);
-const newKeueLink = computed(
-    () => `/app/${appName}/keue/${newKeueDefaultName}`
-);
+const newKeueLink = computed(() => `/app/${appName}/${newKeueDefaultName}`);
 const {
     mutate: createKeue,
     loading,
