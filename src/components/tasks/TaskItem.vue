@@ -15,20 +15,37 @@ const publishedAt = computed(() => {
 const publishedAtToHuman = computed(() => {
     return moment(task.value?.data?.publishedAt).fromNow();
 });
+const payload = computed(() => task.value?.data?.payload);
+const requestContext = computed(() => task.value?.data?.ingressRequestContext);
+const formatPayload: any = (payload: any) => {
+    try {
+        return JSON.parse(atob(task.value?.data?.payload || ""));
+    } catch (error) {
+        return atob(task.value?.data?.payload || "");
+    }
+};
 </script>
 <template>
     <div
-        class="flex justify-between items-center w-full rounded-6xl bg-gray-50 p-4 hover:bg-gray-100"
+        class="flex justify-center flex-col rounded-7xl bg-gray-50 p-6 mb-4 hover:bg-gray-100 w-full"
     >
-        <span class="flex flex-col text-sm">
-            <span>{{ publishedAtToHuman }}</span>
-            <span>{{ publishedAt }}</span>
-        </span>
-        <span class="text-sm">
-            {{ task.id }}
-        </span>
-        <span class="text-sm">
-            {{ task.data?.status }}
-        </span>
+        <div class="flex justify-between items-center w-full">
+            <span class="flex flex-col text-xs">
+                <span>{{ publishedAtToHuman }}</span>
+                <span>{{ publishedAt }}</span>
+            </span>
+            <span class="text-xs">
+                {{ task.id }}
+            </span>
+            <span class="text-sm">
+                {{ task.data?.status }}
+            </span>
+        </div>
+        <div class="flex mt-4">
+            <span class="text-xs">{{ formatPayload(payload) }}</span>
+        </div>
+        <div class="flex mt-4">
+            <span class="text-xs">{{ requestContext }}</span>
+        </div>
     </div>
 </template>
