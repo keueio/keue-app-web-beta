@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import moment from "moment";
 import { computed } from "vue";
+import { useTimeAgo } from "@vueuse/core";
 
 const props = defineProps({
     task: {
@@ -12,6 +13,7 @@ const task = computed(() => props.task);
 const publishedAt = computed(() => {
     return new Date(task.value?.data?.publishedAt).toLocaleString();
 });
+const timeAgo = useTimeAgo(new Date(task.value?.data?.publishedAt));
 const publishedAtToHuman = computed(() => {
     return moment(task.value?.data?.publishedAt).fromNow();
 });
@@ -49,6 +51,7 @@ const formatPayload: any = (payload: any) => {
         <span
             class="flex flex-row justify-end space-x-2 text-xs mr-6 text-gray-400"
         >
+            <span>{{ timeAgo }}</span>
             <span>{{ publishedAtToHuman }}</span>
             <span>{{ publishedAt }}</span>
         </span>

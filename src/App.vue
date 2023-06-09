@@ -8,12 +8,12 @@ const general = useGeneralStore();
 </script>
 
 <template>
-  <div class="">
-    <FullPageLoader v-if="general.fullPageLoading"></FullPageLoader>
-    <PrimaryHeader />
-    <div>
-      <RouterView></RouterView>
+    <div class="">
+        <FullPageLoader v-if="general.fullPageLoading"></FullPageLoader>
+        <PrimaryHeader />
+        <div>
+            <RouterView></RouterView>
+        </div>
+        <PrimaryFooter />
     </div>
-    <PrimaryFooter />
-  </div>
 </template>
