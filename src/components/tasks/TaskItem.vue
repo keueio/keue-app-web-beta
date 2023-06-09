@@ -26,26 +26,31 @@ const formatPayload: any = (payload: any) => {
 };
 </script>
 <template>
-    <div
-        class="flex justify-center flex-col rounded-7xl bg-gray-50 p-6 mb-4 hover:bg-gray-100 w-full"
-    >
-        <div class="flex justify-between items-center w-full">
-            <span class="flex flex-col text-xs">
-                <span>{{ publishedAtToHuman }}</span>
-                <span>{{ publishedAt }}</span>
-            </span>
-            <span class="text-xs">
-                {{ task.id }}
-            </span>
-            <span class="text-sm">
-                {{ task.data?.status }}
-            </span>
+    <div class="flex flex-col">
+        <div
+            class="flex justify-center flex-col rounded-7xl text-gray-600 bg-white p-6 mb-1 hover:bg-gray-50 w-full"
+        >
+            <div class="flex justify-between items-center w-full">
+                <span class="text-xs">
+                    {{ task.id }}
+                </span>
+                <span class="text-sm">
+                    {{ task.data?.status }}
+                </span>
+            </div>
+            <div class="flex mt-4">
+                <span class="text-xs">{{ formatPayload(payload) }}</span>
+            </div>
+            <div class="flex mt-4">
+                <span class="text-xs">{{ requestContext }}</span>
+            </div>
         </div>
-        <div class="flex mt-4">
-            <span class="text-xs">{{ formatPayload(payload) }}</span>
-        </div>
-        <div class="flex mt-4">
-            <span class="text-xs">{{ requestContext }}</span>
-        </div>
+
+        <span
+            class="flex flex-row justify-end space-x-2 text-xs mr-6 text-gray-400"
+        >
+            <span>{{ publishedAtToHuman }}</span>
+            <span>{{ publishedAt }}</span>
+        </span>
     </div>
 </template>

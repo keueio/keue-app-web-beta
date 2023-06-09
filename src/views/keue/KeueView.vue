@@ -181,12 +181,12 @@ onMounted(async () => {
             </div>
         </div>
     </section>
-    <section class="py-8 bg-blueGray-50">
+    <section class="py-8 bg-blueGray-100">
         <div class="container px-4 mx-auto">
             <div
                 class="relative p-10 xl:py-12 xl:px-20 bg-grey-300 overflow-hidden rounded-4xl"
             >
-                <div v-for="task in listFiltered" class="py-1">
+                <div v-for="task in listFiltered" class="py-1 mb-4">
                     <TaskItem :task="task"></TaskItem>
                 </div>
             </div>
