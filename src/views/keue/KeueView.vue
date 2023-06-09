@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { orderBy, uniqBy } from "lodash";
+import { orderBy as lodashOrderBy, uniqBy } from "lodash";
 import ToggleSwitch from "@/components/buttons/ToggleSwitch.vue";
 import TaskItem from "@/components/tasks/TaskItem.vue";
 import { useRoute } from "vue-router";
@@ -15,6 +15,7 @@ import {
     onSnapshot,
     getDocs,
     limit,
+    orderBy,
 } from "firebase/firestore";
 const route = useRoute();
 const keueId = computed(() => route.params.id);
@@ -75,7 +76,7 @@ watch(isRunningToggle, async (value) => {
 const latest: any = ref([]);
 const list: any = ref([]);
 const listFiltered = computed(() =>
-    orderBy(
+    lodashOrderBy(
         uniqBy(list.value, (i: any) => i.id),
         ["data.createdAt"],
         ["desc"]
@@ -97,7 +98,11 @@ onMounted(async () => {
     // Initialize Realtime Database and get a reference to the service
     const queryCollection = `keues/${keueFullId.value}/tasks`;
     console.log("query collection: ", queryCollection);
-    const q = query(collection(db, queryCollection), limit(Number(50)));
+    const q = query(
+        collection(db, queryCollection),
+        orderBy("createdAt", "desc"),
+        limit(Number(50))
+    );
     await getInitialList(q);
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
         console.log("udate: ", querySnapshot);
