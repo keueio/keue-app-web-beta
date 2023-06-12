@@ -7,9 +7,8 @@ import { useMutation, useQuery } from "@vue/apollo-composable";
 import gql from "graphql-tag";
 import { computed, onMounted, ref, watch } from "vue";
 import { useFirestore } from "@/composables/firestoreComposable";
-const { app, db } = useFirestore();
+const { db } = useFirestore();
 import {
-    getFirestore,
     collection,
     query,
     onSnapshot,
@@ -101,7 +100,7 @@ onMounted(async () => {
     const q = query(
         collection(db, queryCollection),
         orderBy("createdAt", "desc"),
-        limit(Number(50))
+        limit(Number(30))
     );
     await getInitialList(q);
     const unsubscribe = onSnapshot(q, (querySnapshot) => {

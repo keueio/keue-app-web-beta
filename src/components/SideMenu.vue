@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import SideMenuCloseButton from "@/components/SideMenuCloseButton.vue";
-import { vAutoAnimate } from "@/directives/directives";
 
 const emits = defineEmits(["closeSideMenu"]);
 const closeSideMenu = () => {
@@ -11,7 +10,7 @@ const closeSideMenu = () => {
     <div>
         <teleport to="body">
             <Transition name="slide-fade">
-                <div v-auto-animate class="navbar-menu fixed top-0 left-0 bottom-0 w-full sm:w-5/6 max-w-max z-50">
+                <div class="navbar-menu fixed top-0 left-0 bottom-0 w-full sm:w-5/6 max-w-max z-50">
                     <div class="navbar-backdrop fixed inset-0 bg-darkGray-800 opacity-80"></div>
                     <nav class="relative flex flex-col py-20 px-10 h-full w-full bg-blueGray-100 overflow-y-auto">
                         <SideMenuCloseButton @click="closeSideMenu" />
