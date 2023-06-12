@@ -57,6 +57,8 @@ const ingressUrl = computed(
     () => `https://${appId.value}.dev-beta.eu.keue.io/${keueId.value}`
 );
 const isRunningToggle = ref(false);
+const isSubscribedToggle = ref(false);
+let unsubscribe = null;
 watch(result, () => {
     console.log("result update: ", result.value);
     isRunningToggle.value = result.value?.keue?.state === "RUNNING";
@@ -82,6 +84,15 @@ const listFiltered = computed(() =>
     )
 );
 
+// Initialize Realtime Database and get a reference to the service
+const queryCollection = computed(() => `keues/${keueFullId.value}/tasks`);
+console.log("query collection: ", queryCollection.value);
+const q = query(
+    collection(db, queryCollection.value),
+    orderBy("createdAt", "desc"),
+    limit(Number(30))
+);
+
 const getInitialList = async (q: any) => {
     return new Promise<void>(async (resolve, reject) => {
         console.log("get initial docs");
@@ -93,17 +104,8 @@ const getInitialList = async (q: any) => {
         return resolve();
     });
 };
-onMounted(async () => {
-    // Initialize Realtime Database and get a reference to the service
-    const queryCollection = `keues/${keueFullId.value}/tasks`;
-    console.log("query collection: ", queryCollection);
-    const q = query(
-        collection(db, queryCollection),
-        orderBy("createdAt", "desc"),
-        limit(Number(30))
-    );
-    await getInitialList(q);
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
+const subscribeToListener = () => {
+    unsubscribe = onSnapshot(q, (querySnapshot) => {
         console.log("udate: ", querySnapshot);
         querySnapshot.docChanges().forEach((change) => {
             if (change.type === "added") {
@@ -126,6 +128,9 @@ onMounted(async () => {
             }
         });
     });
+};
+onMounted(async () => {
+    await getInitialList(q);
 });
 </script>
 
