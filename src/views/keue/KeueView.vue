@@ -131,6 +131,7 @@ const subscribeToListener = () => {
 };
 onMounted(async () => {
     await getInitialList(q);
+    subscribeToListener();
 });
 </script>
 
